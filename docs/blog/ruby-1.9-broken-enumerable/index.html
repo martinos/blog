@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="author" content="Martin Chabot">
+<meta name="description" content="I was working with the each_with_index Enumerator on Ruby 1.9.3 and I stumbled on a strange behavior. Let&rsquo;s take a look at 2 examples:
+&gt;&gt; %w{Bob Roger Joe}.each_with_index.select{|*args| puts args.inspect} [[&quot;Bob&quot;, 0]] [[&quot;Roger&quot;, 1]] [[&quot;Joe&quot;, 2]]  &gt;&gt; %w{Bob Roger Joe}.each_with_index.map{|*args| puts args.inspect} [&quot;Bob&quot;, 0] [&quot;Roger&quot;, 1] [&quot;Joe&quot;, 2]  The select block passes one argument which is an array containing the object and the index. However, map passes two arguments: the object being interated on and the index.">
+
+<meta property="og:title" content="Ruby 1.9 Broken Enumerable" />
+<meta property="og:description" content="I was working with the each_with_index Enumerator on Ruby 1.9.3 and I stumbled on a strange behavior. Let&rsquo;s take a look at 2 examples:
+&gt;&gt; %w{Bob Roger Joe}.each_with_index.select{|*args| puts args.inspect} [[&quot;Bob&quot;, 0]] [[&quot;Roger&quot;, 1]] [[&quot;Joe&quot;, 2]]  &gt;&gt; %w{Bob Roger Joe}.each_with_index.map{|*args| puts args.inspect} [&quot;Bob&quot;, 0] [&quot;Roger&quot;, 1] [&quot;Joe&quot;, 2]  The select block passes one argument which is an array containing the object and the index. However, map passes two arguments: the object being interated on and the index." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://you.github.io/blog/ruby-1.9-broken-enumerable/" />
+
+
+
+<meta property="article:published_time" content="2012-09-14T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2012-09-14T00:00:00&#43;00:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+<title>
+
+
+     Ruby 1.9 Broken Enumerable 
+
+</title>
+<link rel="canonical" href="https://you.github.io/blog/ruby-1.9-broken-enumerable/">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css">
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:500">
+
+
+
+    
+    <link rel="stylesheet" href="/css/reset.css?t=2017-06-05%2017%3a46%3a38.778183954%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/pygments.css?t=2017-06-05%2017%3a46%3a38.778183954%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/main.css?t=2017-06-05%2017%3a46%3a38.778183954%20-0400%20EDT">
+    
+        <link rel="stylesheet" href="/css/override.css?t=2017-06-05%2017%3a46%3a38.778183954%20-0400%20EDT">
+    
+
+
+
+
+<link rel="shortcut icon"
+
+    href="/img/leaf.ico"
+
+>
+
+
+
+
+</head>
+
+
+<body lang="en">
+
+<section class="header">
+    <div class="container">
+        <div class="content">
+            
+            <a href="/"><img class="avatar" src="https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=50" rcset="https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=100 2x, https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=150 3x, https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=200 4x"></a>
+            
+            <a href="/"><div class="name">Martin Chabot</div></a>
+            
+            <nav>
+                <ul>
+                    
+                        <li class="nav-blog"><a href="/blog/"><span>Blog</span></a></li>
+                    
+                        <li class="nav-about"><a href="/about/"><span>About</span></a></li>
+                    
+                        <li class="nav-code"><a href="/code/"><span>Code</span></a></li>
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+            <a href="//github.com/martinos" target="_blank" rel="noopener"><img class="icon" src="/img/github.svg" alt="github" /></a>
+        
+
+        
+            <a href="//twitter.com/martinosis" target="_blank" rel="noopener"><img class="icon" src="/img/twitter.svg" alt="twitter" /></a>
+        
+
+        
+
+        
+            <a href="//linkedin.com/in/martin-chabot-0377623" target="_blank" rel="noopener"><img class="icon" src="/img/linkedin.svg" alt="linkedin" /></a>
+        
+
+        
+
+        
+
+        
+
+        
+            <a href="https://you.github.io/index.xml"><img class="icon" src="/img/rss.svg" alt="rss" /></a>
+        
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    Ruby 1.9 Broken Enumerable
+
+</div>
+
+                    <div class="initials"><a href="https://you.github.io/"></a></div>
+                </div>
+                <div class="meta">
+                    
+                    <div class="date" title='Fri Sep 14 2012 00:00:00 UTC'>Sep 14, 2012</div>
+                    
+                    
+		    <div class="reading-time"><div class="middot"></div>3 minutes read</div>
+                    
+                </div>
+            </div>
+            <div class="markdown">
+                <p>I was working with the <code>each_with_index</code> Enumerator on Ruby 1.9.3 and I stumbled on a strange behavior.
+Let&rsquo;s take a look at 2 examples:</p>
+
+<pre><code class="language-ruby">&gt;&gt; %w{Bob Roger Joe}.each_with_index.select{|*args| puts args.inspect}
+[[&quot;Bob&quot;, 0]]
+[[&quot;Roger&quot;, 1]]
+[[&quot;Joe&quot;, 2]]
+</code></pre>
+
+<pre><code class="language-ruby">&gt;&gt; %w{Bob Roger Joe}.each_with_index.map{|*args| puts args.inspect}
+[&quot;Bob&quot;, 0]
+[&quot;Roger&quot;, 1]
+[&quot;Joe&quot;, 2]
+</code></pre>
+
+<p>The <em>select</em> block passes one argument which is an array containing the object and the index. However, <em>map</em> passes two arguments: the object being interated on and the index.</p>
+
+<p>If we look at the <a href="http://ruby-doc.org/core-1.9.3/Enumerable.html#method-i-map">Enumerable#map documentation</a>, we read that the block needs one argument: obj. So we can intuitively think that in the case of <code>each_with_index</code>, the obj would be an array containing the object iterated on and the index. But it&rsquo;s clearly not the case.</p>
+
+<p>Since <em>map</em> and <em>select</em> methods are implemented in the Enumerable module using the <em>each</em> method, let&rsquo;s get a look a the <em>Eumerator#each</em></p>
+
+<pre><code class="language-ruby">&gt;&gt; %w{Bob Roger Joe}.each_with_index.each { |*args| puts args.inspect }
+[&quot;Bob&quot;, 0]
+[&quot;Roger&quot;, 1]
+[&quot;Joe&quot;, 2]
+</code></pre>
+
+<p>As we can see, the <em>each</em> method that the Enumerable module uses can have any number of block arguments. I imagine that under the hood <em>map</em> uses the splat operator.</p>
+
+<p>Let&rsquo;s create our own Enumerable class:</p>
+
+<pre><code class="language-ruby">class MyEnumerable
+  include Enumerable
+  
+  def each
+    3.times { yield 1, 2, 3, 4 }
+  end
+end
+
+enum = MyEnumerable.new
+enum.map { |*args| puts args.inspect }
+[1, 2, 3, 4]
+[1, 2, 3, 4]
+[1, 2, 3, 4]
+[1, 2, 3, 4]
+</code></pre>
+
+<p>The big question is: Which Enumerable methods behave like the <em>map</em> method? Lets calculate the number of arguments of some Enumerable methods that are using a <em>each</em> method that uses 1 and 2 block arguments.</p>
+
+<pre><code class="language-ruby">enum_methods = %w{inject map select count find group_by flat_map drop_while each_entry detect find_index max_by min_by minmax none? one? partition reject reverse_each sort_by}
+
+nb_args = enum_methods.inject({}) do |memo, method|
+  memo[method] ||= {}
+  proc1 = Proc.new { |*args| memo[method][:each_with_1_arg] = args.length }
+  [1,2].send(method, &amp;proc1) rescue nil
+  proc2 = Proc.new{ |*args| memo[method][:each_with_2_arg] = args.length }
+  [1,2].each_with_index.send(method, &amp;proc2) rescue nil
+  memo
+end
+
+puts nb_args.to_yaml
+---
+inject:
+  :each_with_1_arg: 2
+  :each_with_2_arg: 2
+map:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 2
+select:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 1
+count:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 2
+find:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 1
+group_by:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 1
+flat_map:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 2
+drop_while:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 1
+each_entry:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 1
+detect:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 1
+find_index:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 2
+max_by:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 1
+min_by:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 1
+minmax:
+  :each_with_1_arg: 2
+  :each_with_2_arg: 2
+none?:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 2
+one?:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 2
+partition:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 1
+reject:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 1
+reverse_each:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 1
+sort_by:
+  :each_with_1_arg: 1
+  :each_with_2_arg: 1
+</code></pre>
+
+<p>The methods that behave differently with a <code>each</code> block with 2 arguments than with 1 argument are: <code>map</code>, <code>count</code>, <code>flat_map</code>, <code>find_index</code>, <code>none?</code>, <code>one?</code>. Which is 7 methods out of 20. How can we remember those?</p>
+
+<p>If you run the last script on Ruby 1.8.7 you will see that the map <code>method</code> and its friends are not splatting the arguments.</p>
+
+<p>I am trying to find the logic in those changes in Enumerable but I don&rsquo;t find any. So do you think like me that Enumerable is broken?</p>
+
+                <br>
+		<p><a href="/blog/">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'martinos.github.io';
+    var disqus_identifier = 'https:\/\/you.github.io\/blog\/ruby-1.9-broken-enumerable\/';
+    var disqus_title = 'Ruby 1.9 Broken Enumerable';
+    var disqus_url = 'https:\/\/you.github.io\/blog\/ruby-1.9-broken-enumerable\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-123-45', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/ruby.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+
+</body>
+</html>
+

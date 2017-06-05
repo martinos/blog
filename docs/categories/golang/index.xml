@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on Martin Chabot</title>
+    <link>https://you.github.io/categories/golang/</link>
+    <description>Recent content in Golang on Martin Chabot</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Fri, 14 Sep 2012 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://you.github.io/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Ruby 1.9 Broken Enumerable</title>
+      <link>https://you.github.io/blog/ruby-1.9-broken-enumerable/</link>
+      <pubDate>Fri, 14 Sep 2012 00:00:00 +0000</pubDate>
+      
+      <guid>https://you.github.io/blog/ruby-1.9-broken-enumerable/</guid>
+      <description>I was working with the each_with_index Enumerator on Ruby 1.9.3 and I stumbled on a strange behavior. Let&amp;rsquo;s take a look at 2 examples:
+&amp;gt;&amp;gt; %w{Bob Roger Joe}.each_with_index.select{|*args| puts args.inspect} [[&amp;quot;Bob&amp;quot;, 0]] [[&amp;quot;Roger&amp;quot;, 1]] [[&amp;quot;Joe&amp;quot;, 2]]  &amp;gt;&amp;gt; %w{Bob Roger Joe}.each_with_index.map{|*args| puts args.inspect} [&amp;quot;Bob&amp;quot;, 0] [&amp;quot;Roger&amp;quot;, 1] [&amp;quot;Joe&amp;quot;, 2]  The select block passes one argument which is an array containing the object and the index. However, map passes two arguments: the object being interated on and the index.</description>
+    </item>
+    
+  </channel>
+</rss>

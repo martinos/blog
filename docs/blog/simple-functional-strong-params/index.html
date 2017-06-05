@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="author" content="Martin Chabot">
+<meta name="description" content="Prior to Rails 3, the way to protect against mass-assignment you needed to use the attr_accessor class method on your ActiveRecord models.
+This was kind of weird solution because your model which represents a database table has some knowledge of what kind of data your webserver is receiving.
+The solution that the Rails community had found was the strong_parameters gem. The goal of this gem is to filter params at the controller level.">
+
+<meta property="og:title" content="Simple Functional Strong Params" />
+<meta property="og:description" content="Prior to Rails 3, the way to protect against mass-assignment you needed to use the attr_accessor class method on your ActiveRecord models.
+This was kind of weird solution because your model which represents a database table has some knowledge of what kind of data your webserver is receiving.
+The solution that the Rails community had found was the strong_parameters gem. The goal of this gem is to filter params at the controller level." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://you.github.io/blog/simple-functional-strong-params/" />
+
+
+
+<meta property="article:published_time" content="2017-06-02T04:05:25-06:00"/>
+<meta property="article:modified_time" content="2017-06-02T04:05:25-06:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+<title>
+
+
+     Simple Functional Strong Params 
+
+</title>
+<link rel="canonical" href="https://you.github.io/blog/simple-functional-strong-params/">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/default.min.css">
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Ubuntu+Mono:400,400i,700,700i|Raleway:500">
+
+
+
+    
+    <link rel="stylesheet" href="/css/reset.css?t=2017-06-05%2017%3a46%3a38.77815034%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/pygments.css?t=2017-06-05%2017%3a46%3a38.77815034%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/main.css?t=2017-06-05%2017%3a46%3a38.77815034%20-0400%20EDT">
+    
+        <link rel="stylesheet" href="/css/override.css?t=2017-06-05%2017%3a46%3a38.77815034%20-0400%20EDT">
+    
+
+
+
+
+<link rel="shortcut icon"
+
+    href="/img/leaf.ico"
+
+>
+
+
+
+
+</head>
+
+
+<body lang="en">
+
+<section class="header">
+    <div class="container">
+        <div class="content">
+            
+            <a href="/"><img class="avatar" src="https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=50" rcset="https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=100 2x, https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=150 3x, https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=200 4x"></a>
+            
+            <a href="/"><div class="name">Martin Chabot</div></a>
+            
+            <nav>
+                <ul>
+                    
+                        <li class="nav-blog"><a href="/blog/"><span>Blog</span></a></li>
+                    
+                        <li class="nav-about"><a href="/about/"><span>About</span></a></li>
+                    
+                        <li class="nav-code"><a href="/code/"><span>Code</span></a></li>
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<section class="icons">
+    <div class="container">
+        <div class="content">
+
+        
+            <a href="//github.com/martinos" target="_blank" rel="noopener"><img class="icon" src="/img/github.svg" alt="github" /></a>
+        
+
+        
+            <a href="//twitter.com/martinosis" target="_blank" rel="noopener"><img class="icon" src="/img/twitter.svg" alt="twitter" /></a>
+        
+
+        
+
+        
+            <a href="//linkedin.com/in/martin-chabot-0377623" target="_blank" rel="noopener"><img class="icon" src="/img/linkedin.svg" alt="linkedin" /></a>
+        
+
+        
+
+        
+
+        
+
+        
+            <a href="https://you.github.io/index.xml"><img class="icon" src="/img/rss.svg" alt="rss" /></a>
+        
+        
+        </div>
+    </div>
+</section>
+
+
+<section class="main post non-narrow zero-top-spacing">
+    <div class="container">
+        <div class="content">
+            <div class="front-matter">
+                <div class="title-container">
+                    <div class="page-heading">
+
+    Simple Functional Strong Params
+
+</div>
+
+                    <div class="initials"><a href="https://you.github.io/"></a></div>
+                </div>
+                <div class="meta">
+                    
+                    <div class="date" title='Fri Jun 2 2017 04:05:25 -0600'>Jun 2, 2017</div>
+                    
+                    
+		    <div class="reading-time"><div class="middot"></div>7 minutes read</div>
+                    
+                </div>
+            </div>
+            <div class="markdown">
+                
+
+<p>Prior to Rails 3, the way to protect against mass-assignment you needed to use the <code>attr_accessor</code> class method on your ActiveRecord models.</p>
+
+<p>This was kind of weird solution because your model which represents a database table has some knowledge of what kind of data your webserver is receiving.</p>
+
+<p>The solution that the Rails community had found was the <code>strong_parameters</code> gem. The goal of this gem is to filter params at the controller level. This is a better solution but I find it hard to use when you need to filter complex data structures.</p>
+
+<p>Even this example found in the documention is pretty hard to understand.</p>
+
+<pre><code class="language-ruby">params.permit(:name, 
+              {:emails =&gt; []}, 
+              :friends =&gt; [ :name, 
+                            { :family =&gt; [ :name ], 
+                              :hobbies =&gt; [] }])
+</code></pre>
+
+<h2 id="partial-application">Partial application</h2>
+
+<p>In order to understand the solution that I propose, you need understand partial application of functions, which is one of the key features of some functional languages such Haskell, OCaml, Elm etc.. Note that in this document when I talk about functions, I am talking about lambdas or procs.</p>
+
+<p>Here is the definition of partial application taken from Wikipedia;</p>
+
+<blockquote>
+<p>In computer science, partial application (or partial function application) refers to the process of fixing a number of arguments to a function, producing another function of smaller arity.</p>
+</blockquote>
+
+<p>To better understand what is partial application lets start with an example.</p>
+
+<p>Let say that you have the <code>add</code> function that you define using lambda.</p>
+
+<pre><code class="language-ruby">add = -&gt; a, b { a + b }
+</code></pre>
+
+<p>You can call this function this way:</p>
+
+<pre><code class="language-ruby">add.(1, 2)
+#=&gt; 3
+</code></pre>
+
+<p>But you can write it using partial application</p>
+
+<pre><code class="language-ruby">add = -&gt; a { -&gt; b { a + b } }
+</code></pre>
+
+<p>Now you can call the function this way</p>
+
+<pre><code class="language-ruby">add_1 = add.(1)
+# =&gt; #&lt;Proc:0x007fcf57a58a60@(irb):12 (lambda)&gt;
+add_1.(2)
+# =&gt; 3
+</code></pre>
+
+<p>This means that we can partially apply 1 to the <code>add</code> function then apply 2. Note that when we pass the last param, the result gets computed.</p>
+
+<p>So you can call the same function this way</p>
+
+<pre><code class="language-ruby">add.(1).(2)
+# =&gt; 3
+</code></pre>
+
+<p>This process of converting a function with multiple parameters to function returning other functions is called currying. Currying can be painful if done manually. Ruby has a solution for that: it&rsquo;s the <code>curry</code> method that is defined on <code>Proc</code> objects.</p>
+
+<p>So you can take a function with multiple params and convert it to a function with one params that returns a function with one param&hellip; up until there is no parameters left.</p>
+
+<p>Here&rsquo;s an example:</p>
+
+<pre><code class="language-ruby">add_3_numbers = -&gt; a, b ,c { a + b + c }.curry
+</code></pre>
+
+<p>Then your function is curried:</p>
+
+<pre><code class="language-ruby">add3_numbers.(1).(2).(3)
+# =&gt; 6
+</code></pre>
+
+<p>This gives us a easy way to apply the parameters of that function in different contexts. This is a very powerful concept that allows you to &ldquo;initialize&rdquo; functions before running them.</p>
+
+<h2 id="functions-to-the-rescue">Functions to the rescue</h2>
+
+<h3 id="hash">Hash</h3>
+
+<p>Let say that we define a function <code>filter_hash</code> which takes a list of <code>keys</code> to keep from the params hash and the <code>params</code> hash.</p>
+
+<pre><code class="language-ruby">filter_hash = -&gt; keys, params {
+  Hash[keys.map { |key| [key, param[key]] }]
+}.curry
+</code></pre>
+
+<p>We can use this function to filter a params hash like this one:</p>
+
+<pre><code class="language-ruby">params = {name: &quot;Joe&quot;, age: &quot;23&quot;, pwd: &quot;hacked_password&quot;}
+
+filter_hash.([:name, :age]).(params)
+# =&gt; {name: &quot;Joe&quot;, age: &quot;23&quot;}
+</code></pre>
+
+<p>This is great but if we have a more complicated params hash:</p>
+
+<pre><code class="language-ruby">user_params = {name: &quot;Joe&quot;, age: &quot;23&quot;, pwd: &quot;hacked_password&quot;,
+               contact: { address: &quot;2342 St-Denis&quot;,
+                          to_filter: &quot;&quot;}}
+</code></pre>
+
+<p>We might want to apply a filter to the contact hash. The <code>filter_hash</code> does not allow us to apply a filter on the values of the params hash.</p>
+
+<pre><code class="language-ruby">filter_hash.([:name, :age, :contact]).(params)
+# =&gt; {name: &quot;Joe&quot;, age: &quot;23&quot;,
+#     contact: { address: &quot;2342 St-Denis&quot;,
+#                to_filter: &quot;&quot;}}
+</code></pre>
+
+<p>Instead of using the <code>filter_hash</code> function, we can define the <code>hash_of</code> function which takes a <code>fields</code> and a <code>hash</code> param. The <code>fields</code> param is a hash that maps each key you want to keep to a function to be applied to the corresponding value in the params hash. The <code>hash</code> is the params hash to apply the filter.</p>
+
+<p>Here is the definition</p>
+
+<pre><code class="language-ruby">hash_of = -&gt; fields , hash {
+  Hash[fields.map { |(key, fn)| [key, fn.(hash[key])] }]
+}.curry
+</code></pre>
+
+<p>It&rsquo;s easier to understand using an example.</p>
+
+<pre><code class="language-ruby">user = hash_of.(name: -&gt; a {a},
+                age: -&gt; a {a},
+                contact: hash_of.(address: -&gt; a {a}))
+user.(user_params)
+# =&gt; {name: &quot;Joe&quot;, age: &quot;23&quot;,
+#     contact: { address: &quot;2342 St-Denis&quot; }
+</code></pre>
+
+<p>Note that the <code>-&gt; a { a }</code> function is a very useful function in functional programming. It is called the <code>id</code> function, it takes a params and returns it as is. Since <code>id</code> is used in a different context in Rails, we will define the <code>same</code> function.</p>
+
+<pre><code class="language-ruby">same = -&gt; a { a }
+same.(2) # =&gt; 2
+</code></pre>
+
+<p>We can then rewrite the <code>user</code> function using that function:</p>
+
+<pre><code class="language-ruby">hash_of.(name: same,
+         age: same,
+         contact: hash_of.(address: same))
+</code></pre>
+
+<p>This very small function makes the filter functions more DSLish.</p>
+
+<p>Note that these functions are very composable. We can put the <code>contact</code> filter in a variable:</p>
+
+<pre><code class="language-ruby">contact = hash_of.(address: same)
+user = hash_of.(name: same, age: same,
+                contact: hash_of.(contact))
+</code></pre>
+
+<p>With this you can reuse this filter in another controller very easily.</p>
+
+<h3 id="array">Array</h3>
+
+<p>If we want to filter a field that contains an array. We can use the following function:</p>
+
+<pre><code class="language-ruby">array_of = -&gt; fn, value { value.kind_of?(Array) ?  value.map(&amp;fn) : [] }.curry
+</code></pre>
+
+<p>Let say that we have a list of contacts</p>
+
+<pre><code class="language-ruby">contacts_params = [{address: &quot;21 Jump Street&quot;, remove: &quot;me&quot; },
+                   {address: &quot;24 Sussex&quot;, remove: &quot;me too&quot; }]
+</code></pre>
+
+<p>We can use our <code>array_of</code> to filter out our contacts.</p>
+
+<pre><code class="language-ruby">array_of.(contact).(contacts_params)
+# =&gt; [{address: &quot;21 Jump Street&quot;},
+#     {address: &quot;24 Sussex:}]
+</code></pre>
+
+<h3 id="default-values">Default Values</h3>
+
+<p>With strong params it can be hard to set a default value on <code>blank</code> data. But using functions it gets very trivial. We can create a <code>default</code> function.</p>
+
+<pre><code class="language-ruby">default = -&gt; default, a { a.blank? ? default : a  }.curry
+</code></pre>
+
+<pre><code class="language-ruby">contact = hash_of.(address: default.(&quot;N/A&quot;))
+params = [{address: &quot;21 Jump Street&quot;, remove: &quot;me&quot; },
+          {address: &quot;&quot;}]
+array_of.(contact).(params)
+# =&gt; [{address: &quot;21 Jump Street&quot;},
+#     {address: &quot;N/A&quot;}]
+</code></pre>
+
+<h3 id="scalar-values">Scalar Values</h3>
+
+<p>Using the <code>same</code> function can pose some security issues, because if you are expecting a string a you get a hash, the <code>same</code> function will keep the hash. A solution against that problem is the <code>scalar</code> function.</p>
+
+<pre><code class="language-ruby">scalar = -&gt; a { a.kind_of?(Array) || a.kind_of?(Hash) ? nil : a }
+</code></pre>
+
+<p>Here&rsquo;s an example</p>
+
+<pre><code class="language-ruby">hash_of.(name: scalar}.(name: {hack: &quot;coucou&quot;})
+# =&gt; { name: nil }
+
+hash_of.(name: scalar}.(name: &quot;Martin&quot;})
+# =&gt; { name: &quot;Martin&quot; }
+</code></pre>
+
+<h3 id="strong-params-example">Strong params example</h3>
+
+<p>Here&rsquo;s a way to rewrite the example that we&rsquo;ve extracted from the <code>strong_parameters</code> documentation.</p>
+
+<pre><code class="language-ruby">params.permit(:name, 
+              {:emails =&gt; []}, 
+              :friends =&gt; [ :name, 
+                            { :family =&gt; [ :name ], 
+                              :hobbies =&gt; [] }])
+</code></pre>
+
+<pre><code class="language-ruby">friend = {name: scalar,
+          family: hash_of.(name: scalar)
+          hobbies: array_of.(scalar)})}
+hash_of.({ name: scalar,
+           emails: array_of.(scalar),
+           friends: array_of.(friend))
+</code></pre>
+
+<p>Ok, it&rsquo;s a bit more code but it is a way simpler solution, easier to understand, easier to test, more extensible, more reusable and more composable. The only drawback is that you need to be familiar with partial application. However, knowing partial application can improve your code in different ways.</p>
+
+<h3 id="extensibility">Extensibility</h3>
+
+<p>It is very easy to extend this solution by creating your own functions. Nothing forbids you to create validations, cast functions etc. If you want to extend the <code>strong_parameters</code> gem you have to monkey path it, which is a pretty bad solution.</p>
+
+<h3 id="other-contexts">Other contexts</h3>
+
+<p>You can also use this pattern in other context such as converting json structure coming from a remote api. Since you can set defaults or cast data like dates, this makes it a perfect solution to filter/transform complex json payloads structure.</p>
+
+<h3 id="conclusion">Conclusion</h3>
+
+<p>With only a few very simple functions you can do a good part of what the <code>strong_parameters</code> gem does.</p>
+
+<pre><code class="language-ruby">hash_of = -&gt; fields , hash { 
+  Hash[fields.map { |(key, fn)| [key, fn.(hash[key])] }] 
+}.curry
+array_of = -&gt; fn, value { value.kind_of?(Array) ?  value.map(&amp;fn) : [] }.curry
+default = -&gt; default, a { a.blank? ? default : a  }.curry
+scalar = -&gt; a { a.kind_of?(Array) || a.kind_of?(Hash) ? nil : a }
+</code></pre>
+
+<p>This solution is so simple that bugs are very less likely to exist.</p>
+
+                <br>
+		<p><a href="/blog/">Back to posts</a></p>
+            </div>
+            <br>
+            <div class="disqus">
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'martinos.github.io';
+    var disqus_identifier = 'https:\/\/you.github.io\/blog\/simple-functional-strong-params\/';
+    var disqus_title = 'Simple Functional Strong Params';
+    var disqus_url = 'https:\/\/you.github.io\/blog\/simple-functional-strong-params\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-123-45', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/highlight.min.js"></script>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/languages/ruby.min.js"></script>
+  
+
+  <script type="text/javascript">
+    hljs.initHighlightingOnLoad();
+  </script>
+
+
+
+
+</body>
+</html>
+
