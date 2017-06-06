@@ -9,7 +9,7 @@ theme               = "cocoa-hugo-theme"
 author              = "Martin Chabot"
 title               = "Martin Chabot"
 pygmentsuseclasses  = true
-disqusshortname     = "martinos" # Comment out to disable Disqus.
+disqusshortname     = "blog-martinosis-com" # Comment out to disable Disqus.
 pluralizelisttitles = false
 googleAnalytics     = "UA-100550318-1"
 
