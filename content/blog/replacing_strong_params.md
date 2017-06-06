@@ -6,11 +6,11 @@ Tags = ["Development","Ruby", "Functional"]
 title = "Simple Functional Strong Params"
 +++
 
-Prior to Rails 3, the way to protect against mass-assignment you needed to use the `attr_accessor` class method on your ActiveRecord models.
+Prior to Rails 3, the way to protect your Rails app against mass-assignment was to use the `attr_accessor` class method on your ActiveRecord models.
 
-This was kind of weird solution because your model which represents a database table has some knowledge of what kind of data your webserver is receiving.
+This was a less than ideal solution since your model, which represents a database table, was having some knowledge of what kind of data your webserver is receiving.
 
-The solution that the Rails community had found was the `strong_parameters` gem. The goal of this gem is to filter params at the controller level. This is a better solution but I find it hard to use when you need to filter complex data structures.  
+The solution the current solution is the `strong_parameters` gem. The goal of this gem is to filter params at the controller level. This is a better solution but I find it hard to use when you need to filter complex data structures.  
 
 Even this example found in the documention is pretty hard to understand.
 
@@ -21,8 +21,9 @@ params.permit(:name,
                             { :family => [ :name ], 
                               :hobbies => [] }])
 ```
+## The Functional Approach
 
-## Partial application
+### Partial application
 
 In order to understand the solution that I propose, you need understand partial application of functions, which is one of the key features of some functional languages such Haskell, OCaml, Elm etc.. Note that in this document when I talk about functions, I am talking about lambdas or procs.
 
@@ -124,7 +125,7 @@ filter_hash.([:name, :age, :contact]).(params)
 #                to_filter: ""}}
 ```
 
-Instead of using the `filter_hash` function, we can define the `hash_of` function which takes a `fields` and a `hash` param. The `fields` param is a hash that maps each key you want to keep to a function to be applied to the corresponding value in the params hash. The `hash` is the params hash to apply the filter.
+Instead of using the `filter_hash` function, we can define the `hash_of` function which takes a `fields` and a `hash` param. The `fields` param is a hash that maps each key you want to keep to a function that will be applied to the corresponding value in the params hash. The `hash` param correspond to the hash be filtered.
 
 Here is the definition
 
@@ -145,7 +146,7 @@ user.(user_params)
 #     contact: { address: "2342 St-Denis" }
 ```
 
-Note that the `-> a { a }` function is a very useful function in functional programming. It is called the `id` function, it takes a params and returns it as is. Since `id` is used in a different context in Rails, we will define the `same` function.
+Note that the `-> a { a }` function is very useful in functional programming. It is so useful that it has a name, it is called the `id` function. It takes a param and returns it as is. Since `id` is used in a different context in Rails, we will rename it as the `same` function.
 
 ```ruby
 same = -> a { a }
@@ -155,9 +156,9 @@ same.(2) # => 2
 We can then rewrite the `user` function using that function:
 
 ```ruby
-hash_of.(name: same,
-         age: same,
-         contact: hash_of.(address: same))
+user = hash_of.(name: same,
+                age: same,
+                contact: hash_of.(address: same))
 ```
 This very small function makes the filter functions more DSLish.
 
@@ -196,7 +197,7 @@ array_of.(contact).(contacts_params)
 
 ### Default Values
 
-With strong params it can be hard to set a default value on `blank` data. But using functions it gets very trivial. We can create a `default` function.
+With `strong_params` it can be hard to set a default value on `blank` data. But using functions it gets very trivial. We can create a `default` function.
 
 ```ruby
 default = -> default, a { a.blank? ? default : a  }.curry
@@ -213,7 +214,7 @@ array_of.(contact).(params)
 
 ### Scalar Values
 
-Using the `same` function can pose some security issues, because if you are expecting a string a you get a hash, the `same` function will keep the hash. A solution against that problem is the `scalar` function.
+Using the `same` function can cause some security issues, because if you are expecting a string a you get a hash, the `same` function will return that hash. A solution against that problem is the `scalar` function.
 
 ```ruby
 scalar = -> a { a.kind_of?(Array) || a.kind_of?(Hash) ? nil : a }
