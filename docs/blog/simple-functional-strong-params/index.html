@@ -9,14 +9,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="no-referrer">
 <meta name="author" content="Martin Chabot">
-<meta name="description" content="Prior to Rails 3, the way to protect against mass-assignment you needed to use the attr_accessor class method on your ActiveRecord models.
-This was kind of weird solution because your model which represents a database table has some knowledge of what kind of data your webserver is receiving.
-The solution that the Rails community had found was the strong_parameters gem. The goal of this gem is to filter params at the controller level.">
+<meta name="description" content="Prior to Rails 3, the way to protect your Rails app against mass-assignment was to use the attr_accessor class method on your ActiveRecord models.
+This was a less than ideal solution since your model, which represents a database table, was having some knowledge of what kind of data your webserver is receiving.
+The solution the current solution is the strong_parameters gem. The goal of this gem is to filter params at the controller level.">
 
 <meta property="og:title" content="Simple Functional Strong Params" />
-<meta property="og:description" content="Prior to Rails 3, the way to protect against mass-assignment you needed to use the attr_accessor class method on your ActiveRecord models.
-This was kind of weird solution because your model which represents a database table has some knowledge of what kind of data your webserver is receiving.
-The solution that the Rails community had found was the strong_parameters gem. The goal of this gem is to filter params at the controller level." />
+<meta property="og:description" content="Prior to Rails 3, the way to protect your Rails app against mass-assignment was to use the attr_accessor class method on your ActiveRecord models.
+This was a less than ideal solution since your model, which represents a database table, was having some knowledge of what kind of data your webserver is receiving.
+The solution the current solution is the strong_parameters gem. The goal of this gem is to filter params at the controller level." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://martinos.github.com/blog/blog/simple-functional-strong-params/" />
 
@@ -60,11 +60,11 @@ The solution that the Rails community had found was the strong_parameters gem. T
 
 
     
-    <link rel="stylesheet" href="/css/reset.css?t=2017-06-05%2020%3a07%3a26.845529162%20-0400%20EDT">
-    <link rel="stylesheet" href="/css/pygments.css?t=2017-06-05%2020%3a07%3a26.845529162%20-0400%20EDT">
-    <link rel="stylesheet" href="/css/main.css?t=2017-06-05%2020%3a07%3a26.845529162%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/reset.css?t=2017-06-05%2021%3a07%3a58.483751465%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/pygments.css?t=2017-06-05%2021%3a07%3a58.483751465%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/main.css?t=2017-06-05%2021%3a07%3a58.483751465%20-0400%20EDT">
     
-        <link rel="stylesheet" href="/css/override.css?t=2017-06-05%2020%3a07%3a26.845529162%20-0400%20EDT">
+        <link rel="stylesheet" href="/css/override.css?t=2017-06-05%2021%3a07%3a58.483751465%20-0400%20EDT">
     
 
 
@@ -165,11 +165,11 @@ The solution that the Rails community had found was the strong_parameters gem. T
             <div class="markdown">
                 
 
-<p>Prior to Rails 3, the way to protect against mass-assignment you needed to use the <code>attr_accessor</code> class method on your ActiveRecord models.</p>
+<p>Prior to Rails 3, the way to protect your Rails app against mass-assignment was to use the <code>attr_accessor</code> class method on your ActiveRecord models.</p>
 
-<p>This was kind of weird solution because your model which represents a database table has some knowledge of what kind of data your webserver is receiving.</p>
+<p>This was a less than ideal solution since your model, which represents a database table, was having some knowledge of what kind of data your webserver is receiving.</p>
 
-<p>The solution that the Rails community had found was the <code>strong_parameters</code> gem. The goal of this gem is to filter params at the controller level. This is a better solution but I find it hard to use when you need to filter complex data structures.</p>
+<p>The solution the current solution is the <code>strong_parameters</code> gem. The goal of this gem is to filter params at the controller level. This is a better solution but I find it hard to use when you need to filter complex data structures.</p>
 
 <p>Even this example found in the documention is pretty hard to understand.</p>
 
@@ -180,7 +180,9 @@ The solution that the Rails community had found was the strong_parameters gem. T
                               :hobbies =&gt; [] }])
 </code></pre>
 
-<h2 id="partial-application">Partial application</h2>
+<h2 id="the-functional-approach">The Functional Approach</h2>
+
+<h3 id="partial-application">Partial application</h3>
 
 <p>In order to understand the solution that I propose, you need understand partial application of functions, which is one of the key features of some functional languages such Haskell, OCaml, Elm etc.. Note that in this document when I talk about functions, I am talking about lambdas or procs.</p>
 
@@ -275,7 +277,7 @@ filter_hash.([:name, :age]).(params)
 #                to_filter: &quot;&quot;}}
 </code></pre>
 
-<p>Instead of using the <code>filter_hash</code> function, we can define the <code>hash_of</code> function which takes a <code>fields</code> and a <code>hash</code> param. The <code>fields</code> param is a hash that maps each key you want to keep to a function to be applied to the corresponding value in the params hash. The <code>hash</code> is the params hash to apply the filter.</p>
+<p>Instead of using the <code>filter_hash</code> function, we can define the <code>hash_of</code> function which takes a <code>fields</code> and a <code>hash</code> param. The <code>fields</code> param is a hash that maps each key you want to keep to a function that will be applied to the corresponding value in the params hash. The <code>hash</code> param correspond to the hash be filtered.</p>
 
 <p>Here is the definition</p>
 
@@ -294,7 +296,7 @@ user.(user_params)
 #     contact: { address: &quot;2342 St-Denis&quot; }
 </code></pre>
 
-<p>Note that the <code>-&gt; a { a }</code> function is a very useful function in functional programming. It is called the <code>id</code> function, it takes a params and returns it as is. Since <code>id</code> is used in a different context in Rails, we will define the <code>same</code> function.</p>
+<p>Note that the <code>-&gt; a { a }</code> function is very useful in functional programming. It is so useful that it has a name, it is called the <code>id</code> function. It takes a param and returns it as is. Since <code>id</code> is used in a different context in Rails, we will rename it as the <code>same</code> function.</p>
 
 <pre><code class="language-ruby">same = -&gt; a { a }
 same.(2) # =&gt; 2
@@ -302,9 +304,9 @@ same.(2) # =&gt; 2
 
 <p>We can then rewrite the <code>user</code> function using that function:</p>
 
-<pre><code class="language-ruby">hash_of.(name: same,
-         age: same,
-         contact: hash_of.(address: same))
+<pre><code class="language-ruby">user = hash_of.(name: same,
+                age: same,
+                contact: hash_of.(address: same))
 </code></pre>
 
 <p>This very small function makes the filter functions more DSLish.</p>
@@ -340,7 +342,7 @@ user = hash_of.(name: same, age: same,
 
 <h3 id="default-values">Default Values</h3>
 
-<p>With strong params it can be hard to set a default value on <code>blank</code> data. But using functions it gets very trivial. We can create a <code>default</code> function.</p>
+<p>With <code>strong_params</code> it can be hard to set a default value on <code>blank</code> data. But using functions it gets very trivial. We can create a <code>default</code> function.</p>
 
 <pre><code class="language-ruby">default = -&gt; default, a { a.blank? ? default : a  }.curry
 </code></pre>
@@ -355,7 +357,7 @@ array_of.(contact).(params)
 
 <h3 id="scalar-values">Scalar Values</h3>
 
-<p>Using the <code>same</code> function can pose some security issues, because if you are expecting a string a you get a hash, the <code>same</code> function will keep the hash. A solution against that problem is the <code>scalar</code> function.</p>
+<p>Using the <code>same</code> function can cause some security issues, because if you are expecting a string a you get a hash, the <code>same</code> function will return that hash. A solution against that problem is the <code>scalar</code> function.</p>
 
 <pre><code class="language-ruby">scalar = -&gt; a { a.kind_of?(Array) || a.kind_of?(Hash) ? nil : a }
 </code></pre>
