@@ -271,4 +271,6 @@ default = -> default, a { a.blank? ? default : a  }.curry
 scalar = -> a { a.kind_of?(Array) || a.kind_of?(Hash) ? nil : a }
 ```
 
-This solution is so simple that bugs are very less likely to exist.
+This solution is so simple that bugs are very less likely to exist. 
+
+In the next post I will show you how to integrate this solution in your Rails application.
