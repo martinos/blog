@@ -16,7 +16,7 @@
 <meta property="og:description" content="I was working with the each_with_index Enumerator on Ruby 1.9.3 and I stumbled on a strange behavior. Let&rsquo;s take a look at 2 examples:
 &gt;&gt; %w{Bob Roger Joe}.each_with_index.select{|*args| puts args.inspect} [[&quot;Bob&quot;, 0]] [[&quot;Roger&quot;, 1]] [[&quot;Joe&quot;, 2]]  &gt;&gt; %w{Bob Roger Joe}.each_with_index.map{|*args| puts args.inspect} [&quot;Bob&quot;, 0] [&quot;Roger&quot;, 1] [&quot;Joe&quot;, 2]  The select block passes one argument which is an array containing the object and the index. However, map passes two arguments: the object being interated on and the index." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://you.github.io/blog/ruby-1.9-broken-enumerable/" />
+<meta property="og:url" content="https://martinos.github.com/blog/blog/ruby-1.9-broken-enumerable/" />
 
 
 
@@ -40,7 +40,7 @@
      Ruby 1.9 Broken Enumerable 
 
 </title>
-<link rel="canonical" href="https://you.github.io/blog/ruby-1.9-broken-enumerable/">
+<link rel="canonical" href="https://martinos.github.com/blog/blog/ruby-1.9-broken-enumerable/">
 
 
 
@@ -58,11 +58,11 @@
 
 
     
-    <link rel="stylesheet" href="css/reset.css?t=2017-06-05%2019%3a19%3a40.23424251%20-0400%20EDT">
-    <link rel="stylesheet" href="css/pygments.css?t=2017-06-05%2019%3a19%3a40.23424251%20-0400%20EDT">
-    <link rel="stylesheet" href="css/main.css?t=2017-06-05%2019%3a19%3a40.23424251%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/reset.css?t=2017-06-05%2020%3a07%3a26.845585464%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/pygments.css?t=2017-06-05%2020%3a07%3a26.845585464%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/main.css?t=2017-06-05%2020%3a07%3a26.845585464%20-0400%20EDT">
     
-        <link rel="stylesheet" href="/css/override.css?t=2017-06-05%2019%3a19%3a40.23424251%20-0400%20EDT">
+        <link rel="stylesheet" href="/css/override.css?t=2017-06-05%2020%3a07%3a26.845585464%20-0400%20EDT">
     
 
 
@@ -86,18 +86,18 @@
     <div class="container">
         <div class="content">
             
-            <a href="/"><img class="avatar" src="https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=50" rcset="https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=100 2x, https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=150 3x, https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=200 4x"></a>
+            <a href="/blog/"><img class="avatar" src="https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=50" rcset="https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=100 2x, https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=150 3x, https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=200 4x"></a>
             
             <a href="/"><div class="name">Martin Chabot</div></a>
             
             <nav>
                 <ul>
                     
-                        <li class="nav-blog"><a href="/blog/"><span>Blog</span></a></li>
+                        <li class="nav-blog"><a href="https://martinos.github.com/blog/blog/"><span>Blog</span></a></li>
                     
-                        <li class="nav-about"><a href="/about/"><span>About</span></a></li>
+                        <li class="nav-about"><a href="https://martinos.github.com/blog/about/"><span>About</span></a></li>
                     
-                        <li class="nav-code"><a href="/code/"><span>Code</span></a></li>
+                        <li class="nav-code"><a href="https://martinos.github.com/blog/code/"><span>Code</span></a></li>
                     
                 </ul>
             </nav>
@@ -110,27 +110,27 @@
         <div class="content">
 
         
-            <a href="//github.com/martinos" target="_blank" rel="noopener"><img class="icon" src="img/github.svg" alt="github" /></a>
+            <a href="//github.com/martinos" target="_blank" rel="noopener"><img class="icon" src="/img/github.svg" alt="github" /></a>
         
 
         
-            <a href="//twitter.com/martinosis" target="_blank" rel="noopener"><img class="icon" src="img/twitter.svg" alt="twitter" /></a>
-        
-
-        
-
-        
-            <a href="//linkedin.com/in/martin-chabot-0377623" target="_blank" rel="noopener"><img class="icon" src="img/linkedin.svg" alt="linkedin" /></a>
+            <a href="//twitter.com/martinosis" target="_blank" rel="noopener"><img class="icon" src="/img/twitter.svg" alt="twitter" /></a>
         
 
         
 
         
+            <a href="//linkedin.com/in/martin-chabot-0377623" target="_blank" rel="noopener"><img class="icon" src="/img/linkedin.svg" alt="linkedin" /></a>
+        
+
+        
 
         
 
         
-            <a href="https://you.github.io/index.xml"><img class="icon" src="img/rss.svg" alt="rss" /></a>
+
+        
+            <a href="https://martinos.github.com/blog/index.xml"><img class="icon" src="/img/rss.svg" alt="rss" /></a>
         
         
         </div>
@@ -149,7 +149,7 @@
 
 </div>
 
-                    <div class="initials"><a href="https://you.github.io/"></a></div>
+                    <div class="initials"><a href="https://martinos.github.com/blog"></a></div>
                 </div>
                 <div class="meta">
                     
@@ -299,9 +299,9 @@ sort_by:
                 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'martinos.github.io';
-    var disqus_identifier = 'https:\/\/you.github.io\/blog\/ruby-1.9-broken-enumerable\/';
+    var disqus_identifier = 'https:\/\/martinos.github.com\/blog\/blog\/ruby-1.9-broken-enumerable\/';
     var disqus_title = 'Ruby 1.9 Broken Enumerable';
-    var disqus_url = 'https:\/\/you.github.io\/blog\/ruby-1.9-broken-enumerable\/';
+    var disqus_url = 'https:\/\/martinos.github.com\/blog\/blog\/ruby-1.9-broken-enumerable\/';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

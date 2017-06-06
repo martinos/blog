@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ruby on Martin Chabot</title>
-    <link>https://you.github.io/categories/ruby/</link>
+    <link>https://martinos.github.com/blog/categories/ruby/</link>
     <description>Recent content in Ruby on Martin Chabot</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Fri, 02 Jun 2017 04:05:25 -0600</lastBuildDate>
     
-	<atom:link href="https://you.github.io/categories/ruby/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://martinos.github.com/blog/categories/ruby/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Simple Functional Strong Params</title>
-      <link>https://you.github.io/blog/simple-functional-strong-params/</link>
+      <link>https://martinos.github.com/blog/blog/simple-functional-strong-params/</link>
       <pubDate>Fri, 02 Jun 2017 04:05:25 -0600</pubDate>
       
-      <guid>https://you.github.io/blog/simple-functional-strong-params/</guid>
+      <guid>https://martinos.github.com/blog/blog/simple-functional-strong-params/</guid>
       <description>Prior to Rails 3, the way to protect against mass-assignment you needed to use the attr_accessor class method on your ActiveRecord models.
 This was kind of weird solution because your model which represents a database table has some knowledge of what kind of data your webserver is receiving.
 The solution that the Rails community had found was the strong_parameters gem. The goal of this gem is to filter params at the controller level.</description>
@@ -24,10 +24,10 @@ The solution that the Rails community had found was the strong_parameters gem. T
     
     <item>
       <title>How Man Communicates Its Colors With Less On Os X</title>
-      <link>https://you.github.io/blog/how-man-communicates-its-colors-with-less-on-os-x/</link>
+      <link>https://martinos.github.com/blog/blog/how-man-communicates-its-colors-with-less-on-os-x/</link>
       <pubDate>Tue, 19 Oct 2010 00:00:00 +0000</pubDate>
       
-      <guid>https://you.github.io/blog/how-man-communicates-its-colors-with-less-on-os-x/</guid>
+      <guid>https://martinos.github.com/blog/blog/how-man-communicates-its-colors-with-less-on-os-x/</guid>
       <description>Today I was playing with the man utility and I discovered that it does not use the same strategy as ls for coloring its output.
 If we type:
 ls  Colors will be displayed and the files will be listed in multiple columns, but if we send ls stdout to cat:

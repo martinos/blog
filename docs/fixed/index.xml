@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Fixed on Martin Chabot</title>
-    <link>https://you.github.io/fixed/</link>
+    <link>https://martinos.github.com/blog/fixed/</link>
     <description>Recent content in Fixed on Martin Chabot</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Mon, 05 Jun 2017 10:41:39 -0400</lastBuildDate>
     
-	<atom:link href="https://you.github.io/fixed/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://martinos.github.com/blog/fixed/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>about</title>
-      <link>https://you.github.io/about/</link>
+      <link>https://martinos.github.com/blog/about/</link>
       <pubDate>Mon, 05 Jun 2017 10:41:39 -0400</pubDate>
       
-      <guid>https://you.github.io/about/</guid>
+      <guid>https://martinos.github.com/blog/about/</guid>
       <description></description>
     </item>
     

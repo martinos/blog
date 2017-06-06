@@ -3,86 +3,86 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://you.github.io/about/</loc>
+    <loc>https://martinos.github.com/blog/about/</loc>
     <lastmod>2017-06-05T10:41:39-04:00</lastmod>
   </url>
   
   <url>
-    <loc>https://you.github.io/blog/simple-functional-strong-params/</loc>
+    <loc>https://martinos.github.com/blog/blog/simple-functional-strong-params/</loc>
     <lastmod>2017-06-02T04:05:25-06:00</lastmod>
   </url>
   
   <url>
-    <loc>https://you.github.io/blog/ruby-1.9-broken-enumerable/</loc>
+    <loc>https://martinos.github.com/blog/blog/ruby-1.9-broken-enumerable/</loc>
     <lastmod>2012-09-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://you.github.io/blog/how-man-communicates-its-colors-with-less-on-os-x/</loc>
+    <loc>https://martinos.github.com/blog/blog/how-man-communicates-its-colors-with-less-on-os-x/</loc>
     <lastmod>2010-10-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://you.github.io/blog/</loc>
+    <loc>https://martinos.github.com/blog/blog/</loc>
     <lastmod>2017-06-02T04:05:25-06:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://you.github.io/categories/</loc>
+    <loc>https://martinos.github.com/blog/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://you.github.io/tags/development/</loc>
+    <loc>https://martinos.github.com/blog/tags/development/</loc>
     <lastmod>2017-06-02T04:05:25-06:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://you.github.io/categories/development/</loc>
+    <loc>https://martinos.github.com/blog/categories/development/</loc>
     <lastmod>2017-06-02T04:05:25-06:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://you.github.io/fixed/</loc>
+    <loc>https://martinos.github.com/blog/fixed/</loc>
     <lastmod>2017-06-05T10:41:39-04:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://you.github.io/tags/functional/</loc>
+    <loc>https://martinos.github.com/blog/tags/functional/</loc>
     <lastmod>2017-06-02T04:05:25-06:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://you.github.io/categories/golang/</loc>
+    <loc>https://martinos.github.com/blog/categories/golang/</loc>
     <lastmod>2012-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://you.github.io/</loc>
+    <loc>https://martinos.github.com/blog/</loc>
     <lastmod>2017-06-05T10:41:39-04:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://you.github.io/tags/ruby/</loc>
+    <loc>https://martinos.github.com/blog/tags/ruby/</loc>
     <lastmod>2017-06-02T04:05:25-06:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://you.github.io/categories/ruby/</loc>
+    <loc>https://martinos.github.com/blog/categories/ruby/</loc>
     <lastmod>2017-06-02T04:05:25-06:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://you.github.io/tags/</loc>
+    <loc>https://martinos.github.com/blog/tags/</loc>
     <lastmod>2017-06-02T04:05:25-06:00</lastmod>
     <priority>0</priority>
   </url>

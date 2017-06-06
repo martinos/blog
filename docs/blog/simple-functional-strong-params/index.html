@@ -18,7 +18,7 @@ The solution that the Rails community had found was the strong_parameters gem. T
 This was kind of weird solution because your model which represents a database table has some knowledge of what kind of data your webserver is receiving.
 The solution that the Rails community had found was the strong_parameters gem. The goal of this gem is to filter params at the controller level." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://you.github.io/blog/simple-functional-strong-params/" />
+<meta property="og:url" content="https://martinos.github.com/blog/blog/simple-functional-strong-params/" />
 
 
 
@@ -42,7 +42,7 @@ The solution that the Rails community had found was the strong_parameters gem. T
      Simple Functional Strong Params 
 
 </title>
-<link rel="canonical" href="https://you.github.io/blog/simple-functional-strong-params/">
+<link rel="canonical" href="https://martinos.github.com/blog/blog/simple-functional-strong-params/">
 
 
 
@@ -60,11 +60,11 @@ The solution that the Rails community had found was the strong_parameters gem. T
 
 
     
-    <link rel="stylesheet" href="css/reset.css?t=2017-06-05%2019%3a19%3a40.234310953%20-0400%20EDT">
-    <link rel="stylesheet" href="css/pygments.css?t=2017-06-05%2019%3a19%3a40.234310953%20-0400%20EDT">
-    <link rel="stylesheet" href="css/main.css?t=2017-06-05%2019%3a19%3a40.234310953%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/reset.css?t=2017-06-05%2020%3a07%3a26.845529162%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/pygments.css?t=2017-06-05%2020%3a07%3a26.845529162%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/main.css?t=2017-06-05%2020%3a07%3a26.845529162%20-0400%20EDT">
     
-        <link rel="stylesheet" href="/css/override.css?t=2017-06-05%2019%3a19%3a40.234310953%20-0400%20EDT">
+        <link rel="stylesheet" href="/css/override.css?t=2017-06-05%2020%3a07%3a26.845529162%20-0400%20EDT">
     
 
 
@@ -88,18 +88,18 @@ The solution that the Rails community had found was the strong_parameters gem. T
     <div class="container">
         <div class="content">
             
-            <a href="/"><img class="avatar" src="https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=50" rcset="https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=100 2x, https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=150 3x, https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=200 4x"></a>
+            <a href="/blog/"><img class="avatar" src="https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=50" rcset="https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=100 2x, https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=150 3x, https://gravatar.com/avatar/ed77c0d1c8da409c4f69f67f934ff0bb?s=200 4x"></a>
             
             <a href="/"><div class="name">Martin Chabot</div></a>
             
             <nav>
                 <ul>
                     
-                        <li class="nav-blog"><a href="/blog/"><span>Blog</span></a></li>
+                        <li class="nav-blog"><a href="https://martinos.github.com/blog/blog/"><span>Blog</span></a></li>
                     
-                        <li class="nav-about"><a href="/about/"><span>About</span></a></li>
+                        <li class="nav-about"><a href="https://martinos.github.com/blog/about/"><span>About</span></a></li>
                     
-                        <li class="nav-code"><a href="/code/"><span>Code</span></a></li>
+                        <li class="nav-code"><a href="https://martinos.github.com/blog/code/"><span>Code</span></a></li>
                     
                 </ul>
             </nav>
@@ -112,27 +112,27 @@ The solution that the Rails community had found was the strong_parameters gem. T
         <div class="content">
 
         
-            <a href="//github.com/martinos" target="_blank" rel="noopener"><img class="icon" src="img/github.svg" alt="github" /></a>
+            <a href="//github.com/martinos" target="_blank" rel="noopener"><img class="icon" src="/img/github.svg" alt="github" /></a>
         
 
         
-            <a href="//twitter.com/martinosis" target="_blank" rel="noopener"><img class="icon" src="img/twitter.svg" alt="twitter" /></a>
-        
-
-        
-
-        
-            <a href="//linkedin.com/in/martin-chabot-0377623" target="_blank" rel="noopener"><img class="icon" src="img/linkedin.svg" alt="linkedin" /></a>
+            <a href="//twitter.com/martinosis" target="_blank" rel="noopener"><img class="icon" src="/img/twitter.svg" alt="twitter" /></a>
         
 
         
 
         
+            <a href="//linkedin.com/in/martin-chabot-0377623" target="_blank" rel="noopener"><img class="icon" src="/img/linkedin.svg" alt="linkedin" /></a>
+        
+
+        
 
         
 
         
-            <a href="https://you.github.io/index.xml"><img class="icon" src="img/rss.svg" alt="rss" /></a>
+
+        
+            <a href="https://martinos.github.com/blog/index.xml"><img class="icon" src="/img/rss.svg" alt="rss" /></a>
         
         
         </div>
@@ -151,7 +151,7 @@ The solution that the Rails community had found was the strong_parameters gem. T
 
 </div>
 
-                    <div class="initials"><a href="https://you.github.io/"></a></div>
+                    <div class="initials"><a href="https://martinos.github.com/blog"></a></div>
                 </div>
                 <div class="meta">
                     
@@ -420,9 +420,9 @@ scalar = -&gt; a { a.kind_of?(Array) || a.kind_of?(Hash) ? nil : a }
                 <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_shortname = 'martinos.github.io';
-    var disqus_identifier = 'https:\/\/you.github.io\/blog\/simple-functional-strong-params\/';
+    var disqus_identifier = 'https:\/\/martinos.github.com\/blog\/blog\/simple-functional-strong-params\/';
     var disqus_title = 'Simple Functional Strong Params';
-    var disqus_url = 'https:\/\/you.github.io\/blog\/simple-functional-strong-params\/';
+    var disqus_url = 'https:\/\/martinos.github.com\/blog\/blog\/simple-functional-strong-params\/';
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
