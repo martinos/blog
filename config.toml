@@ -11,7 +11,7 @@ title               = "Martin Chabot"
 pygmentsuseclasses  = true
 disqusshortname     = "martinos.github.io" # Comment out to disable Disqus.
 pluralizelisttitles = false
-googleAnalytics     = "UA-123-45"
+googleAnalytics     = "UA-100550318-1"
 
 [permalinks]
 fixed = ":title/"
