@@ -8,11 +8,6 @@
   </url>
   
   <url>
-    <loc>https://martinos.github.com/blog/blog/simple-functional-strong-params/</loc>
-    <lastmod>2017-06-02T04:05:25-06:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://martinos.github.com/blog/blog/ruby-1.9-broken-enumerable/</loc>
     <lastmod>2012-09-14T00:00:00+00:00</lastmod>
   </url>
@@ -24,7 +19,11 @@
   
   <url>
     <loc>https://martinos.github.com/blog/blog/</loc>
-    <lastmod>2017-06-02T04:05:25-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://martinos.github.com/blog/blog/</loc>
+    <lastmod>2012-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -35,13 +34,13 @@
   
   <url>
     <loc>https://martinos.github.com/blog/categories/development/</loc>
-    <lastmod>2017-06-02T04:05:25-06:00</lastmod>
+    <lastmod>2012-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://martinos.github.com/blog/tags/development/</loc>
-    <lastmod>2017-06-02T04:05:25-06:00</lastmod>
+    <lastmod>2012-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -53,7 +52,7 @@
   
   <url>
     <loc>https://martinos.github.com/blog/tags/functional/</loc>
-    <lastmod>2017-06-02T04:05:25-06:00</lastmod>
+    <lastmod>2012-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -71,19 +70,19 @@
   
   <url>
     <loc>https://martinos.github.com/blog/categories/ruby/</loc>
-    <lastmod>2017-06-02T04:05:25-06:00</lastmod>
+    <lastmod>2010-10-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://martinos.github.com/blog/tags/ruby/</loc>
-    <lastmod>2017-06-02T04:05:25-06:00</lastmod>
+    <lastmod>2012-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://martinos.github.com/blog/tags/</loc>
-    <lastmod>2017-06-02T04:05:25-06:00</lastmod>
+    <lastmod>2012-09-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

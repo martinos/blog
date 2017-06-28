@@ -1,4 +1,4 @@
-+++
+e++
 date = "2017-06-02T04:05:25-06:00"
 Categories = ["Development","Ruby"]
 Description = ""
@@ -153,7 +153,7 @@ same = -> a { a }
 same.(2) # => 2
 ```
 
-We can then rewrite the `user` function using this one 
+We can then rewrite the `user` function
 
 ```ruby
 user = hash_of.(name: same,
@@ -214,7 +214,7 @@ array_of.(contact).(params)
 
 ### Scalar Values
 
-Using the `same` function can cause some security issues, because if you are expecting a string a you get a hash. That function will return that hash. A solution against that problem is the `scalar` function.
+Using the `same` function can cause some security issues. If you are expecting the value of a field to be a string and you get a hash, that function will return that hash. A solution against that problem is the `scalar` function
 
 ```ruby
 scalar = -> a { a.kind_of?(Array) || a.kind_of?(Hash) ? nil : a }
