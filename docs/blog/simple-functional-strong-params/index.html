@@ -11,12 +11,12 @@
 <meta name="author" content="Martin Chabot">
 <meta name="description" content="Prior to Rails 3, the way to protect your Rails app against mass-assignment was to use the attr_accessor class method on your ActiveRecord models.
 This was a less than ideal solution since your model, which represents a database table, was having some knowledge of what kind of data your webserver is receiving.
-The solution the current solution is the strong_parameters gem. The goal of this gem is to filter params at the controller level.">
+The solution that the Rails community has found was written in the strong_parameters gem. The goal of this gem is to filter params at the controller level.">
 
 <meta property="og:title" content="Simple Functional Strong Params" />
 <meta property="og:description" content="Prior to Rails 3, the way to protect your Rails app against mass-assignment was to use the attr_accessor class method on your ActiveRecord models.
 This was a less than ideal solution since your model, which represents a database table, was having some knowledge of what kind of data your webserver is receiving.
-The solution the current solution is the strong_parameters gem. The goal of this gem is to filter params at the controller level." />
+The solution that the Rails community has found was written in the strong_parameters gem. The goal of this gem is to filter params at the controller level." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://martinos.github.com/blog/blog/simple-functional-strong-params/" />
 
@@ -60,11 +60,11 @@ The solution the current solution is the strong_parameters gem. The goal of this
 
 
     
-    <link rel="stylesheet" href="/css/reset.css?t=2017-06-05%2022%3a00%3a59.095412061%20-0400%20EDT">
-    <link rel="stylesheet" href="/css/pygments.css?t=2017-06-05%2022%3a00%3a59.095412061%20-0400%20EDT">
-    <link rel="stylesheet" href="/css/main.css?t=2017-06-05%2022%3a00%3a59.095412061%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/reset.css?t=2017-06-27%2021%3a15%3a55.261331017%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/pygments.css?t=2017-06-27%2021%3a15%3a55.261331017%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/main.css?t=2017-06-27%2021%3a15%3a55.261331017%20-0400%20EDT">
     
-        <link rel="stylesheet" href="/css/override.css?t=2017-06-05%2022%3a00%3a59.095412061%20-0400%20EDT">
+        <link rel="stylesheet" href="/css/override.css?t=2017-06-27%2021%3a15%3a55.261331017%20-0400%20EDT">
     
 
 
@@ -169,7 +169,7 @@ The solution the current solution is the strong_parameters gem. The goal of this
 
 <p>This was a less than ideal solution since your model, which represents a database table, was having some knowledge of what kind of data your webserver is receiving.</p>
 
-<p>The solution the current solution is the <code>strong_parameters</code> gem. The goal of this gem is to filter params at the controller level. This is a better solution but I find it hard to use when you need to filter complex data structures.</p>
+<p>The solution that the Rails community has found was written in the <code>strong_parameters</code> gem. The goal of this gem is to filter params at the controller level. This is a better solution but I find it hard to use when you need to filter complex data structures.</p>
 
 <p>Even this example found in the documention is pretty hard to understand.</p>
 
@@ -235,22 +235,22 @@ add_1.(2)
 <pre><code class="language-ruby">add_3_numbers = -&gt; a, b ,c { a + b + c }.curry
 </code></pre>
 
-<p>Then your function is curried:</p>
+<p>Then your function will be curried, you can then apply parameters one after the other.</p>
 
 <pre><code class="language-ruby">add3_numbers.(1).(2).(3)
 # =&gt; 6
 </code></pre>
 
-<p>This gives us a easy way to apply the parameters of that function in different contexts. This is a very powerful concept that allows you to &ldquo;initialize&rdquo; functions before running them.</p>
+<p>This gives us a easy way to apply the parameters on that function in different contexts. This is a very powerful concept that allows you to &ldquo;initialize&rdquo; functions before running them.</p>
 
-<h2 id="functions-to-the-rescue">Functions to the rescue</h2>
+<h2 id="functional-strong-params">Functional Strong Params</h2>
 
 <h3 id="hash">Hash</h3>
 
 <p>Let say that we define a function <code>filter_hash</code> which takes a list of <code>keys</code> to keep from the params hash and the <code>params</code> hash.</p>
 
 <pre><code class="language-ruby">filter_hash = -&gt; keys, params {
-  Hash[keys.map { |key| [key, param[key]] }]
+  keys.map { |key| [key, params[key]] }.to_h
 }.curry
 </code></pre>
 
@@ -269,7 +269,7 @@ filter_hash.([:name, :age]).(params)
                           to_filter: &quot;&quot;}}
 </code></pre>
 
-<p>We might want to apply a filter to the contact hash. The <code>filter_hash</code> does not allow us to apply a filter on the values of the params hash.</p>
+<p>We might want to apply a filter to the contact hash. The <code>filter_hash</code> function does not allow us to apply a filter to the values of the params hash.</p>
 
 <pre><code class="language-ruby">filter_hash.([:name, :age, :contact]).(params)
 # =&gt; {name: &quot;Joe&quot;, age: &quot;23&quot;,
@@ -277,12 +277,12 @@ filter_hash.([:name, :age]).(params)
 #                to_filter: &quot;&quot;}}
 </code></pre>
 
-<p>Instead of using the <code>filter_hash</code> function, we can define the <code>hash_of</code> function which takes a <code>fields</code> and a <code>hash</code> param. The <code>fields</code> param is a hash that maps each key you want to keep to a function that will be applied to the corresponding value in the params hash. The <code>hash</code> param correspond to the hash be filtered.</p>
+<p>Instead of using the <code>filter_hash</code> function, we can define the <code>hash_of</code> function which takes a <code>fields</code> and a <code>hash</code> param. The <code>fields</code> param is a hash that maps each key you want to keep to a function that will be applied to the corresponding value in the params hash. The <code>hash</code> param corresponds to the hash be filtered.</p>
 
 <p>Here is the definition</p>
 
 <pre><code class="language-ruby">hash_of = -&gt; fields , hash {
-  Hash[fields.map { |(key, fn)| [key, fn.(hash[key])] }]
+  fields.map { |(key, fn)| [key, fn.(hash[key])] }.to_h
 }.curry
 </code></pre>
 
@@ -296,13 +296,13 @@ user.(user_params)
 #     contact: { address: &quot;2342 St-Denis&quot; }
 </code></pre>
 
-<p>Note that the <code>-&gt; a { a }</code> function is very useful in functional programming. It is so useful that it has a name, it is called the <code>id</code> function. It takes a param and returns it as is. Since <code>id</code> is used in a different context in Rails, we will rename it as the <code>same</code> function.</p>
+<p>Note that the <code>-&gt; a { a }</code> function is very useful in functional programming. It is so useful that it has a name, it is called the <code>id</code> function. It takes a param and returns it as is. Since <code>id</code> is used in a different context in Rails, we will rename it to <code>same</code>.</p>
 
 <pre><code class="language-ruby">same = -&gt; a { a }
 same.(2) # =&gt; 2
 </code></pre>
 
-<p>We can then rewrite the <code>user</code> function using that function:</p>
+<p>We can then rewrite the <code>user</code> function using this one</p>
 
 <pre><code class="language-ruby">user = hash_of.(name: same,
                 age: same,
@@ -318,7 +318,7 @@ user = hash_of.(name: same, age: same,
                 contact: hash_of.(contact))
 </code></pre>
 
-<p>With this you can reuse this filter in another controller very easily.</p>
+<p>You can then reuse this filter in another controller very easily.</p>
 
 <h3 id="array">Array</h3>
 
@@ -342,7 +342,7 @@ user = hash_of.(name: same, age: same,
 
 <h3 id="default-values">Default Values</h3>
 
-<p>With <code>strong_params</code> it can be hard to set a default value on <code>blank</code> data. But using functions it gets very trivial. We can create a <code>default</code> function.</p>
+<p>With <code>strong_params</code> it can be hard to set a default value on <code>blank</code> data. But using these very simple functions it is very trivial. We can create a <code>default</code> function.</p>
 
 <pre><code class="language-ruby">default = -&gt; default, a { a.blank? ? default : a  }.curry
 </code></pre>
@@ -357,17 +357,17 @@ array_of.(contact).(params)
 
 <h3 id="scalar-values">Scalar Values</h3>
 
-<p>Using the <code>same</code> function can cause some security issues, because if you are expecting a string a you get a hash, the <code>same</code> function will return that hash. A solution against that problem is the <code>scalar</code> function.</p>
+<p>Using the <code>same</code> function can cause some security issues, because if you are expecting a string a you get a hash. That function will return that hash. A solution against that problem is the <code>scalar</code> function.</p>
 
 <pre><code class="language-ruby">scalar = -&gt; a { a.kind_of?(Array) || a.kind_of?(Hash) ? nil : a }
 </code></pre>
 
 <p>Here&rsquo;s an example</p>
 
-<pre><code class="language-ruby">hash_of.(name: scalar}.(name: {hack: &quot;coucou&quot;})
+<pre><code class="language-ruby">hash_of.(name: scalar).(name: {hack: &quot;coucou&quot;})
 # =&gt; { name: nil }
 
-hash_of.(name: scalar}.(name: &quot;Martin&quot;})
+hash_of.(name: scalar).(name: &quot;Martin&quot;)
 # =&gt; { name: &quot;Martin&quot; }
 </code></pre>
 
@@ -375,12 +375,16 @@ hash_of.(name: scalar}.(name: &quot;Martin&quot;})
 
 <p>Here&rsquo;s a way to rewrite the example that we&rsquo;ve extracted from the <code>strong_parameters</code> documentation.</p>
 
+<p>The original one</p>
+
 <pre><code class="language-ruby">params.permit(:name, 
               {:emails =&gt; []}, 
               :friends =&gt; [ :name, 
                             { :family =&gt; [ :name ], 
                               :hobbies =&gt; [] }])
 </code></pre>
+
+<p>The functional one</p>
 
 <pre><code class="language-ruby">friend = {name: scalar,
           family: hash_of.(name: scalar)
@@ -404,15 +408,17 @@ hash_of.({ name: scalar,
 
 <p>With only a few very simple functions you can do a good part of what the <code>strong_parameters</code> gem does.</p>
 
+<p>Here&rsquo;s a recap of functions that we&rsquo;ve talked about in this blog post.</p>
+
 <pre><code class="language-ruby">hash_of = -&gt; fields , hash { 
-  Hash[fields.map { |(key, fn)| [key, fn.(hash[key])] }] 
+  fields.map { |(key, fn)| [key, fn.(hash[key])] }.to_h
 }.curry
 array_of = -&gt; fn, value { value.kind_of?(Array) ?  value.map(&amp;fn) : [] }.curry
 default = -&gt; default, a { a.blank? ? default : a  }.curry
 scalar = -&gt; a { a.kind_of?(Array) || a.kind_of?(Hash) ? nil : a }
 </code></pre>
 
-<p>This solution is so simple that bugs are very less likely to exist.</p>
+<p>This solution is so simple that bugs are very less likely to exist.  It does not covers all the functionalities that the <code>strong_params</code> is offering, but I think that with minor changes we would be able to support most of them.</p>
 
 <p>In the next post I will show you how to integrate this solution in your Rails application.</p>
 

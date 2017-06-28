@@ -10,7 +10,7 @@ Prior to Rails 3, the way to protect your Rails app against mass-assignment was 
 
 This was a less than ideal solution since your model, which represents a database table, was having some knowledge of what kind of data your webserver is receiving.
 
-The solution the current solution is the `strong_parameters` gem. The goal of this gem is to filter params at the controller level. This is a better solution but I find it hard to use when you need to filter complex data structures.  
+The solution that the Rails community has found was written in the `strong_parameters` gem. The goal of this gem is to filter params at the controller level. This is a better solution but I find it hard to use when you need to filter complex data structures.  
 
 Even this example found in the documention is pretty hard to understand.
 
@@ -79,15 +79,15 @@ Here's an example:
 add_3_numbers = -> a, b ,c { a + b + c }.curry
 ```
 
-Then your function is curried:
+Then your function will be curried, you can then apply parameters one after the other. 
 
 ```ruby
 add3_numbers.(1).(2).(3)
 # => 6
 ```
-This gives us a easy way to apply the parameters of that function in different contexts. This is a very powerful concept that allows you to "initialize" functions before running them.
+This gives us a easy way to apply the parameters on that function in different contexts. This is a very powerful concept that allows you to "initialize" functions before running them.
 
-## Functions to the rescue
+## Functional Strong Params
 
 ### Hash
 
@@ -95,7 +95,7 @@ Let say that we define a function `filter_hash` which takes a list of `keys` to 
 
 ```ruby
 filter_hash = -> keys, params {
-  Hash[keys.map { |key| [key, param[key]] }]
+  keys.map { |key| [key, params[key]] }.to_h
 }.curry
 ```
 
@@ -116,7 +116,7 @@ user_params = {name: "Joe", age: "23", pwd: "hacked_password",
                           to_filter: ""}}
 ```
 
-We might want to apply a filter to the contact hash. The `filter_hash` does not allow us to apply a filter on the values of the params hash.
+We might want to apply a filter to the contact hash. The `filter_hash` function does not allow us to apply a filter to the values of the params hash.
 
 ```ruby
 filter_hash.([:name, :age, :contact]).(params)
@@ -125,13 +125,13 @@ filter_hash.([:name, :age, :contact]).(params)
 #                to_filter: ""}}
 ```
 
-Instead of using the `filter_hash` function, we can define the `hash_of` function which takes a `fields` and a `hash` param. The `fields` param is a hash that maps each key you want to keep to a function that will be applied to the corresponding value in the params hash. The `hash` param correspond to the hash be filtered.
+Instead of using the `filter_hash` function, we can define the `hash_of` function which takes a `fields` and a `hash` param. The `fields` param is a hash that maps each key you want to keep to a function that will be applied to the corresponding value in the params hash. The `hash` param corresponds to the hash be filtered.
 
 Here is the definition
 
 ```ruby
 hash_of = -> fields , hash {
-  Hash[fields.map { |(key, fn)| [key, fn.(hash[key])] }]
+  fields.map { |(key, fn)| [key, fn.(hash[key])] }.to_h
 }.curry
 ```
 
@@ -146,14 +146,14 @@ user.(user_params)
 #     contact: { address: "2342 St-Denis" }
 ```
 
-Note that the `-> a { a }` function is very useful in functional programming. It is so useful that it has a name, it is called the `id` function. It takes a param and returns it as is. Since `id` is used in a different context in Rails, we will rename it as the `same` function.
+Note that the `-> a { a }` function is very useful in functional programming. It is so useful that it has a name, it is called the `id` function. It takes a param and returns it as is. Since `id` is used in a different context in Rails, we will rename it to `same`.
 
 ```ruby
 same = -> a { a }
 same.(2) # => 2
 ```
 
-We can then rewrite the `user` function using that function:
+We can then rewrite the `user` function using this one 
 
 ```ruby
 user = hash_of.(name: same,
@@ -170,7 +170,7 @@ user = hash_of.(name: same, age: same,
                 contact: hash_of.(contact))
 ```
 
-With this you can reuse this filter in another controller very easily.
+You can then reuse this filter in another controller very easily.
 
 ### Array
 
@@ -197,7 +197,7 @@ array_of.(contact).(contacts_params)
 
 ### Default Values
 
-With `strong_params` it can be hard to set a default value on `blank` data. But using functions it gets very trivial. We can create a `default` function.
+With `strong_params` it can be hard to set a default value on `blank` data. But using these very simple functions it is very trivial. We can create a `default` function.
 
 ```ruby
 default = -> default, a { a.blank? ? default : a  }.curry
@@ -214,17 +214,17 @@ array_of.(contact).(params)
 
 ### Scalar Values
 
-Using the `same` function can cause some security issues, because if you are expecting a string a you get a hash, the `same` function will return that hash. A solution against that problem is the `scalar` function.
+Using the `same` function can cause some security issues, because if you are expecting a string a you get a hash. That function will return that hash. A solution against that problem is the `scalar` function.
 
 ```ruby
 scalar = -> a { a.kind_of?(Array) || a.kind_of?(Hash) ? nil : a }
 ```
 Here's an example
 ```ruby
-hash_of.(name: scalar}.(name: {hack: "coucou"})
+hash_of.(name: scalar).(name: {hack: "coucou"})
 # => { name: nil }
 
-hash_of.(name: scalar}.(name: "Martin"})
+hash_of.(name: scalar).(name: "Martin")
 # => { name: "Martin" }
 ```
 
@@ -232,6 +232,7 @@ hash_of.(name: scalar}.(name: "Martin"})
 
 Here's a way to rewrite the example that we've extracted from the `strong_parameters` documentation.
 
+The original one
 ```ruby
 params.permit(:name, 
               {:emails => []}, 
@@ -239,7 +240,7 @@ params.permit(:name,
                             { :family => [ :name ], 
                               :hobbies => [] }])
 ```
-
+The functional one
 ```ruby
 friend = {name: scalar,
           family: hash_of.(name: scalar)
@@ -262,15 +263,17 @@ You can also use this pattern in other context such as converting json structure
 
 With only a few very simple functions you can do a good part of what the `strong_parameters` gem does.
 
+Here's a recap of functions that we've talked about in this blog post.
+
 ```ruby
 hash_of = -> fields , hash { 
-  Hash[fields.map { |(key, fn)| [key, fn.(hash[key])] }] 
+  fields.map { |(key, fn)| [key, fn.(hash[key])] }.to_h
 }.curry
 array_of = -> fn, value { value.kind_of?(Array) ?  value.map(&fn) : [] }.curry
 default = -> default, a { a.blank? ? default : a  }.curry
 scalar = -> a { a.kind_of?(Array) || a.kind_of?(Hash) ? nil : a }
 ```
 
-This solution is so simple that bugs are very less likely to exist. 
+This solution is so simple that bugs are very less likely to exist.  It does not covers all the functionalities that the `strong_params` is offering, but I think that with minor changes we would be able to support most of them.
 
 In the next post I will show you how to integrate this solution in your Rails application.
