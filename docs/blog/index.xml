@@ -6,10 +6,21 @@
     <description>Recent content in Blog on Martin Chabot</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Fri, 14 Sep 2012 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 02 Jun 2017 04:05:25 -0600</lastBuildDate>
     
 	<atom:link href="https://martinos.github.com/blog/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Simple Functional Strong Params</title>
+      <link>https://martinos.github.com/blog/blog/simple-functional-strong-params/</link>
+      <pubDate>Fri, 02 Jun 2017 04:05:25 -0600</pubDate>
+      
+      <guid>https://martinos.github.com/blog/blog/simple-functional-strong-params/</guid>
+      <description>Prior to Rails 3, the way to protect your Rails app against mass-assignment was to use the attr_accessor class method on your ActiveRecord models.
+This was a less than ideal solution since your model, which represents a database table, was having some knowledge of what kind of data your webserver is receiving.
+The solution that the Rails community has found was written in the strong_parameters gem. The goal of this gem is to filter params at the controller level.</description>
+    </item>
     
     <item>
       <title>Ruby 1.9 Broken Enumerable</title>
@@ -32,17 +43,6 @@ If we type:
 ls  Colors will be displayed and the files will be listed in multiple columns, but if we send ls stdout to cat:
 ls | cat  Colors will be removed and there will be one file per line. Why?
 Because when ls detects that its stdout is a tty, it outputs the list in multiple columns with colors.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://martinos.github.com/blog/blog/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://martinos.github.com/blog/blog/</guid>
-      <description>e++ date = &amp;ldquo;2017-06-02T04:05:25-06:00&amp;rdquo; Categories = [&amp;ldquo;Development&amp;rdquo;,&amp;ldquo;Ruby&amp;rdquo;] Description = &amp;ldquo;&amp;rdquo; Tags = [&amp;ldquo;Development&amp;rdquo;,&amp;ldquo;Ruby&amp;rdquo;, &amp;ldquo;Functional&amp;rdquo;] title = &amp;ldquo;Simple Functional Strong Params&amp;rdquo; +++
-Prior to Rails 3, the way to protect your Rails app against mass-assignment was to use the attr_accessor class method on your ActiveRecord models.
-This was a less than ideal solution since your model, which represents a database table, was having some knowledge of what kind of data your webserver is receiving.</description>
     </item>
     
   </channel>

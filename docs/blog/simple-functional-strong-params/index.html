@@ -60,11 +60,11 @@ The solution that the Rails community has found was written in the strong_parame
 
 
     
-    <link rel="stylesheet" href="/css/reset.css?t=2017-06-27%2021%3a15%3a55.261331017%20-0400%20EDT">
-    <link rel="stylesheet" href="/css/pygments.css?t=2017-06-27%2021%3a15%3a55.261331017%20-0400%20EDT">
-    <link rel="stylesheet" href="/css/main.css?t=2017-06-27%2021%3a15%3a55.261331017%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/reset.css?t=2017-06-28%2017%3a40%3a48.476627992%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/pygments.css?t=2017-06-28%2017%3a40%3a48.476627992%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/main.css?t=2017-06-28%2017%3a40%3a48.476627992%20-0400%20EDT">
     
-        <link rel="stylesheet" href="/css/override.css?t=2017-06-27%2021%3a15%3a55.261331017%20-0400%20EDT">
+        <link rel="stylesheet" href="/css/override.css?t=2017-06-28%2017%3a40%3a48.476627992%20-0400%20EDT">
     
 
 
@@ -302,7 +302,7 @@ user.(user_params)
 same.(2) # =&gt; 2
 </code></pre>
 
-<p>We can then rewrite the <code>user</code> function using this one</p>
+<p>We can then rewrite the <code>user</code> function</p>
 
 <pre><code class="language-ruby">user = hash_of.(name: same,
                 age: same,
@@ -357,7 +357,7 @@ array_of.(contact).(params)
 
 <h3 id="scalar-values">Scalar Values</h3>
 
-<p>Using the <code>same</code> function can cause some security issues, because if you are expecting a string a you get a hash. That function will return that hash. A solution against that problem is the <code>scalar</code> function.</p>
+<p>Using the <code>same</code> function can cause some security issues. If you are expecting the value of a field to be a string and you get a hash, that function will return that hash. A solution against that problem is the <code>scalar</code> function</p>
 
 <pre><code class="language-ruby">scalar = -&gt; a { a.kind_of?(Array) || a.kind_of?(Hash) ? nil : a }
 </code></pre>

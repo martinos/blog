@@ -6,10 +6,21 @@
     <description>Recent content in Functional on Martin Chabot</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
-    <lastBuildDate>Fri, 14 Sep 2012 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 02 Jun 2017 04:05:25 -0600</lastBuildDate>
     
 	<atom:link href="https://martinos.github.com/blog/tags/functional/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Simple Functional Strong Params</title>
+      <link>https://martinos.github.com/blog/blog/simple-functional-strong-params/</link>
+      <pubDate>Fri, 02 Jun 2017 04:05:25 -0600</pubDate>
+      
+      <guid>https://martinos.github.com/blog/blog/simple-functional-strong-params/</guid>
+      <description>Prior to Rails 3, the way to protect your Rails app against mass-assignment was to use the attr_accessor class method on your ActiveRecord models.
+This was a less than ideal solution since your model, which represents a database table, was having some knowledge of what kind of data your webserver is receiving.
+The solution that the Rails community has found was written in the strong_parameters gem. The goal of this gem is to filter params at the controller level.</description>
+    </item>
     
     <item>
       <title>Ruby 1.9 Broken Enumerable</title>
