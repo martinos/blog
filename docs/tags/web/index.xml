@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ruby on Martin Chabot</title>
-    <link>https://martinos.github.com/blog/categories/ruby/</link>
-    <description>Recent content in Ruby on Martin Chabot</description>
+    <title>Web on Martin Chabot</title>
+    <link>https://martinos.github.com/blog/tags/web/</link>
+    <description>Recent content in Web on Martin Chabot</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-US</language>
     <lastBuildDate>Fri, 02 Jun 2017 04:05:25 -0600</lastBuildDate>
     
-	<atom:link href="https://martinos.github.com/blog/categories/ruby/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://martinos.github.com/blog/tags/web/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -20,19 +20,6 @@
       <description>Prior to Rails 3, the way to protect our Rails app against mass-assignment was to use the attr_accessor class method on our ActiveRecord models.
 This was a less than ideal solution since our models, which represents a database table, were having some knowledge of what kind of data our webservers were receiving.
 The solution that the Rails community has found was the strong_parameters gem. The goal of this gem is to filter params at the controller level.</description>
-    </item>
-    
-    <item>
-      <title>How Man Communicates Its Colors With Less On Os X</title>
-      <link>https://martinos.github.com/blog/blog/how-man-communicates-its-colors-with-less-on-os-x/</link>
-      <pubDate>Tue, 19 Oct 2010 00:00:00 +0000</pubDate>
-      
-      <guid>https://martinos.github.com/blog/blog/how-man-communicates-its-colors-with-less-on-os-x/</guid>
-      <description>Today I was playing with the man utility and I discovered that it does not use the same strategy as ls for coloring its output.
-If we type:
-ls  Colors will be displayed and the files will be listed in multiple columns, but if we send ls stdout to cat:
-ls | cat  Colors will be removed and there will be one file per line. Why?
-Because when ls detects that its stdout is a tty, it outputs the list in multiple columns with colors.</description>
     </item>
     
   </channel>

@@ -1,16 +1,16 @@
 +++
 date = "2017-06-02T04:05:25-06:00"
 Categories = ["Development","Ruby"]
-Description = ""
-Tags = ["Development","Ruby", "Functional"]
-title = "Simple Functional Strong Params"
+Description = "Use Functional Idioms To Filter Params Comig From The Scary Internet"
+Tags = ["Development","Ruby", "Functional", "Ruby On Rails", "Rails", "Web"]
+title = "Simple Functional Strong Params In Ruby"
 +++
 
-Prior to Rails 3, the way to protect your Rails app against mass-assignment was to use the `attr_accessor` class method on your ActiveRecord models.
+Prior to Rails 3, the way to protect our Rails app against mass-assignment was to use the `attr_accessor` class method on our ActiveRecord models.
 
-This was a less than ideal solution since your model, which represents a database table, was having some knowledge of what kind of data your webserver is receiving.
+This was a less than ideal solution since our models, which represents a database table, were having some knowledge of what kind of data our webservers were receiving.
 
-The solution that the Rails community has found was written in the `strong_parameters` gem. The goal of this gem is to filter params at the controller level. This is a better solution but I find it hard to use when you need to filter complex data structures.  
+The solution that the Rails community has found was the `strong_parameters` gem. The goal of this gem is to filter params at the controller level. This is a better solution but I find it hard to use when you need to filter complex data structures.  
 
 Even this example found in the documention is pretty hard to understand.
 
@@ -60,7 +60,7 @@ add_1 = add.(1)
 add_1.(2)
 # => 3
 ```
-This means that we can partially apply 1 to the `add` function then apply 2. Note that when we pass the last param, the result gets computed.
+This means that we can partially apply `1` to the `add` function then apply `2`. Note that when we pass the last param, the result gets computed.
 
 So you can call the same function this way
 
@@ -69,7 +69,7 @@ add.(1).(2)
 # => 3
 ```
 
-This process of converting a function with multiple parameters to function returning other functions is called currying. Currying can be painful if done manually. Ruby has a solution for that: it's the `curry` method that is defined on `Proc` objects.
+This process of converting a function with multiple parameters to a function that retuns a function in a recursive way is called currying. Currying can be painful if done manually. Ruby has a solution for that: it's the `curry` method that is defined on `Proc` objects.
 
 So you can take a function with multiple params and convert it to a function with one params that returns a function with one param... up until there is no parameters left.
 
@@ -130,7 +130,8 @@ Instead of using the `filter_hash` function, we can define the `hash_of` functio
 Here is the definition
 
 ```ruby
-hash_of = -> fields , hash {
+hash_of = -> (fields, hash) {
+  hash ||= {} # The hash can be nil in the case of nested hash_of
   fields.map { |(key, fn)| [key, fn.(hash[key])] }.to_h
 }.curry
 ```
@@ -242,12 +243,12 @@ params.permit(:name,
 ```
 The functional one
 ```ruby
-friend = {name: scalar,
-          family: hash_of.(name: scalar)
-          hobbies: array_of.(scalar)})}
+friend = hash_of.(name: scalar,
+          family: hash_of.(name: scalar),
+          hobbies: array_of.(scalar))
 hash_of.({ name: scalar,
            emails: array_of.(scalar),
-           friends: array_of.(friend))
+           friends: array_of.(friend)})
 ```
 Ok, it's a bit more code but it is a way simpler solution, easier to understand, easier to test, more extensible, more reusable and more composable. The only drawback is that you need to be familiar with partial application. However, knowing partial application can improve your code in different ways.
 
@@ -266,7 +267,9 @@ With only a few very simple functions you can do a good part of what the `strong
 Here's a recap of functions that we've talked about in this blog post.
 
 ```ruby
+same = -> a { a }
 hash_of = -> fields , hash { 
+  hash ||= {}
   fields.map { |(key, fn)| [key, fn.(hash[key])] }.to_h
 }.curry
 array_of = -> fn, value { value.kind_of?(Array) ?  value.map(&fn) : [] }.curry
@@ -274,6 +277,6 @@ default = -> default, a { a.blank? ? default : a  }.curry
 scalar = -> a { a.kind_of?(Array) || a.kind_of?(Hash) ? nil : a }
 ```
 
-This solution is so simple that bugs are very less likely to exist.  It does not covers all the functionalities that the `strong_params` is offering, but I think that with minor changes we would be able to support most of them.
+This solution is so simple that bugs are very less likely to exist.  It covers most functionalities that the `strong_params` gem is offering, but I think that with minor changes we would be able to support all of them.
 
 In the next post I will show you how to integrate this solution in your Rails application.

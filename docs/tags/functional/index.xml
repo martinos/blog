@@ -12,14 +12,14 @@
     
     
     <item>
-      <title>Simple Functional Strong Params</title>
-      <link>https://martinos.github.com/blog/blog/simple-functional-strong-params/</link>
+      <title>Simple Functional Strong Params In Ruby</title>
+      <link>https://martinos.github.com/blog/blog/simple-functional-strong-params-in-ruby/</link>
       <pubDate>Fri, 02 Jun 2017 04:05:25 -0600</pubDate>
       
-      <guid>https://martinos.github.com/blog/blog/simple-functional-strong-params/</guid>
-      <description>Prior to Rails 3, the way to protect your Rails app against mass-assignment was to use the attr_accessor class method on your ActiveRecord models.
-This was a less than ideal solution since your model, which represents a database table, was having some knowledge of what kind of data your webserver is receiving.
-The solution that the Rails community has found was written in the strong_parameters gem. The goal of this gem is to filter params at the controller level.</description>
+      <guid>https://martinos.github.com/blog/blog/simple-functional-strong-params-in-ruby/</guid>
+      <description>Prior to Rails 3, the way to protect our Rails app against mass-assignment was to use the attr_accessor class method on our ActiveRecord models.
+This was a less than ideal solution since our models, which represents a database table, were having some knowledge of what kind of data our webservers were receiving.
+The solution that the Rails community has found was the strong_parameters gem. The goal of this gem is to filter params at the controller level.</description>
     </item>
     
     <item>
