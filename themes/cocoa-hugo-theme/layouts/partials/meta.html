@@ -6,5 +6,6 @@
 <meta name="referrer" content="no-referrer">
 {{ with .Site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
 <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{if .IsPage}}{{ .Summary }}{{ else }}{{ with .Site.Params.description }}{{ . }}{{ end }}{{ end }}{{ end }}">
+<meta name="google-site-verification" content="hniZRe58PfvNKzO97FV7lsZTUKiLUq7M5gZXFFsJRTo" />
 
 {{ template "_internal/opengraph.html" . }}
