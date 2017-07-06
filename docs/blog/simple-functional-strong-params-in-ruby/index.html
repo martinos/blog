@@ -57,11 +57,11 @@
 
 
     
-    <link rel="stylesheet" href="/css/reset.css?t=2017-07-06%2015%3a48%3a57.187164864%20-0400%20EDT">
-    <link rel="stylesheet" href="/css/pygments.css?t=2017-07-06%2015%3a48%3a57.187164864%20-0400%20EDT">
-    <link rel="stylesheet" href="/css/main.css?t=2017-07-06%2015%3a48%3a57.187164864%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/reset.css?t=2017-07-06%2018%3a22%3a29.570436239%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/pygments.css?t=2017-07-06%2018%3a22%3a29.570436239%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/main.css?t=2017-07-06%2018%3a22%3a29.570436239%20-0400%20EDT">
     
-        <link rel="stylesheet" href="/css/override.css?t=2017-07-06%2015%3a48%3a57.187164864%20-0400%20EDT">
+        <link rel="stylesheet" href="/css/override.css?t=2017-07-06%2018%3a22%3a29.570436239%20-0400%20EDT">
     
 
 
@@ -223,7 +223,7 @@ add_1.(2)
 # =&gt; 3
 </code></pre>
 
-<p>This process of converting a function with multiple parameters to a function that retuns a function in a recursive way is called currying. Currying can be painful if done manually. Ruby has a solution for that: it&rsquo;s the <code>curry</code> method that is defined on <code>Proc</code> objects.</p>
+<p>This process of converting a function with multiple parameters to a function that returns a function in a recursive way is called currying. Currying can be painful if done manually. Ruby has a solution for that: it&rsquo;s the <code>curry</code> method that is defined on <code>Proc</code> objects.</p>
 
 <p>So you can take a function with multiple params and convert it to a function with one params that returns a function with one param&hellip; up until there is no parameters left.</p>
 
@@ -335,7 +335,7 @@ user = hash_of.(name: same, age: same,
 
 <pre><code class="language-ruby">array_of.(contact).(contacts_params)
 # =&gt; [{address: &quot;21 Jump Street&quot;},
-#     {address: &quot;24 Sussex:}]
+#     {address: &quot;24 Sussex&quot;}]
 </code></pre>
 
 <h3 id="default-values">Default Values</h3>
