@@ -125,7 +125,7 @@ filter_hash.([:name, :age, :contact]).(params)
 #                to_filter: ""}}
 ```
 
-Instead of using the `filter_hash` function, we can define the `hash_of` function which takes a `fields` and a `hash` param. The `fields` param is a hash that maps each key you want to keep to a function that will be applied to the corresponding value in the params hash. The `hash` param corresponds to the hash be filtered.
+Instead of using the `filter_hash` function, we can define the `hash_of` function which takes 2 params. The first one is the `fields` param which is a hash that maps each key you want to keep to a function that will be applied to the corresponding value in the params hash. The second one is the `hash` param which corresponds to the hash be filtered.
 
 Here is the definition
 

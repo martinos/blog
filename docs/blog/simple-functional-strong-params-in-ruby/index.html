@@ -57,11 +57,11 @@
 
 
     
-    <link rel="stylesheet" href="/css/reset.css?t=2017-06-29%2011%3a36%3a14.50063007%20-0400%20EDT">
-    <link rel="stylesheet" href="/css/pygments.css?t=2017-06-29%2011%3a36%3a14.50063007%20-0400%20EDT">
-    <link rel="stylesheet" href="/css/main.css?t=2017-06-29%2011%3a36%3a14.50063007%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/reset.css?t=2017-07-06%2015%3a48%3a57.187164864%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/pygments.css?t=2017-07-06%2015%3a48%3a57.187164864%20-0400%20EDT">
+    <link rel="stylesheet" href="/css/main.css?t=2017-07-06%2015%3a48%3a57.187164864%20-0400%20EDT">
     
-        <link rel="stylesheet" href="/css/override.css?t=2017-06-29%2011%3a36%3a14.50063007%20-0400%20EDT">
+        <link rel="stylesheet" href="/css/override.css?t=2017-07-06%2015%3a48%3a57.187164864%20-0400%20EDT">
     
 
 
@@ -274,7 +274,7 @@ filter_hash.([:name, :age]).(params)
 #                to_filter: &quot;&quot;}}
 </code></pre>
 
-<p>Instead of using the <code>filter_hash</code> function, we can define the <code>hash_of</code> function which takes a <code>fields</code> and a <code>hash</code> param. The <code>fields</code> param is a hash that maps each key you want to keep to a function that will be applied to the corresponding value in the params hash. The <code>hash</code> param corresponds to the hash be filtered.</p>
+<p>Instead of using the <code>filter_hash</code> function, we can define the <code>hash_of</code> function which takes 2 params. The first one is the <code>fields</code> param which is a hash that maps each key you want to keep to a function that will be applied to the corresponding value in the params hash. The second one is the <code>hash</code> param which corresponds to the hash be filtered.</p>
 
 <p>Here is the definition</p>
 
