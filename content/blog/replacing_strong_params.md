@@ -69,7 +69,7 @@ add.(1).(2)
 # => 3
 ```
 
-This process of converting a function with multiple parameters to a function that retuns a function in a recursive way is called currying. Currying can be painful if done manually. Ruby has a solution for that: it's the `curry` method that is defined on `Proc` objects.
+This process of converting a function with multiple parameters to a function that returns a function in a recursive way is called currying. Currying can be painful if done manually. Ruby has a solution for that: it's the `curry` method that is defined on `Proc` objects.
 
 So you can take a function with multiple params and convert it to a function with one params that returns a function with one param... up until there is no parameters left.
 
@@ -193,7 +193,7 @@ We can use our `array_of` to filter out our contacts.
 ```ruby
 array_of.(contact).(contacts_params)
 # => [{address: "21 Jump Street"},
-#     {address: "24 Sussex:}]
+#     {address: "24 Sussex"}]
 ```
 
 ### Default Values
