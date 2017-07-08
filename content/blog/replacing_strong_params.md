@@ -168,7 +168,7 @@ Note that these functions are very composable. We can put the `contact` filter i
 ```ruby
 contact = hash_of.(address: same)
 user = hash_of.(name: same, age: same,
-                contact: hash_of.(contact))
+                contact: contact)
 ```
 
 You can then reuse this filter in another controller very easily.
