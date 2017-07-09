@@ -1,7 +1,7 @@
 +++
 date = "2017-06-02T04:05:25-06:00"
 Categories = ["Development","Ruby"]
-Description = "Use Functional Idioms To Filter Params Comig From The Scary Internet"
+Description = "Use Functional Idioms To Filter Params Coming From The Scary Internet"
 Tags = ["Development","Ruby", "Functional", "Ruby On Rails", "Rails", "Web"]
 title = "Simple Functional Strong Params In Ruby"
 +++
