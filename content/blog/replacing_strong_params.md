@@ -6,7 +6,7 @@ Tags = ["Development","Ruby", "Functional", "Ruby On Rails", "Rails", "Web"]
 title = "Simple Functional Strong Params In Ruby"
 +++
 
-Prior to Rails 3, the way to protect our Rails app against mass-assignment was to use the `attr_accessor` class method on our ActiveRecord models.
+Prior to Rails 3, the way to protect our Rails app against mass-assignment was to use the `attr_accessible` class method on our ActiveRecord models.
 
 This was a less than ideal solution since our models, which represents a database table, were having some knowledge of what kind of data our webservers were receiving.
 
