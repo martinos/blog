@@ -146,7 +146,7 @@ Notice that the functions that we used in the previous examples are taking only 
 
 Caveat
 
-This method of programming is very nice, but like all solution it has it's drawback. First, most of Ruby programmer are not familliar about this way of programming. They will need to kwow about function composition and about this special operator. 
+This method of programming is very nice, but like all solution it has it's drawback. First, most Ruby programmers are not familliar about this way of programming. They will need to kwow about function composition and about this special operator. 
 
 The second drawback is that if you make an error building your compositions, the interpretor will give you error messages that are not very helpful, since Ruby error messages are for a OO language.
 
