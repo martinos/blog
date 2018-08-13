@@ -34,7 +34,7 @@ celcius = to_celcius(fahrenheit)
 celcius_str(celcius)
 ```
 
-But in order to eliminate the temporary variable, you can rewrite it this way
+But to eliminate the temporary variable, you can rewrite it this way
 
 ```ruby
 celcius_str(to_celcius(fahrenheit))

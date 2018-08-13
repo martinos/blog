@@ -27,7 +27,7 @@ params.permit(:name,
 
 In order to understand the solution that I propose, you need understand partial application of functions, which is one of the key features of some functional languages such Haskell, OCaml, Elm etc.. Note that in this document when I talk about functions, I am talking about lambdas or procs.
 
-Here is the definition of partial application taken from Wikipedia;
+Here is the definition of partial application taken from Wikipedia:
 
 > In computer science, partial application (or partial function application) refers to the process of fixing a number of arguments to a function, producing another function of smaller arity.
 
@@ -254,7 +254,7 @@ Ok, it's a bit more code but it is a way simpler solution, easier to understand,
 
 ### Extensibility
 
-It is very easy to extend this solution by creating your own functions. Nothing forbids you to create validations, cast functions etc. If you want to extend the `strong_parameters` gem you have to monkey path it, which is a pretty bad solution.
+It is very easy to extend this solution by creating your own functions. Nothing forbids you to create validations, cast functions etc. If you want to extend the `strong_parameters` gem you have to monkey patch it, which is a pretty bad solution.
 
 ### Other contexts
 

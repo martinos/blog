@@ -4,3 +4,5 @@ title = "about"
 
 +++
 
+My main domains of expertise are automation, telecommunications and web. I am very interested in writing composable software that are easy to maintain. This is why that I concentrate all my efforts in fuctional language such as Haskel and Elm.
+
